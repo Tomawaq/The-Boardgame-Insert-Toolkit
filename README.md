@@ -416,7 +416,7 @@ value is expected to be a bool, and determines whether the shape is rotated for 
 #### `CMP_FILLET_RADIUS`
 value is expected to be a number, and determines the radius of the fillet, if shape is fillet.
 
-#### `CMP_FILLET_BOTH`
+#### `CMP_FILLET_BOTH_B`
 value is expected to be a bool, and determines whether the fillet is all arround or not when CMP_SHAPE is set to FILLET.
 
 #### `CMP_PEDESTAL_BASE_B`

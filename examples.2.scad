@@ -283,7 +283,7 @@ data =
                 [
                     [CMP_COMPARTMENT_SIZE_XYZ,              [ 53, 53, 15.0] ],
                     [ CMP_SHAPE,                            FILLET ],
-                    [ CMP_FILLET_BOTH,                      t ],
+                    [ CMP_FILLET_BOTH_B,                    t ],
                     [ CMP_FILLET_RADIUS,                    5 ],
                 ]
             ],

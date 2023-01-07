@@ -111,7 +111,7 @@ CMP_CUTOUT_BOTTOM_B = "cutout_bottom";
 CMP_CUTOUT_TYPE = "cutout_type";
 CMP_SHEAR = "shear";
 CMP_FILLET_RADIUS = "fillet_radius";
-CMP_FILLET_BOTH = "fillet_both";
+CMP_FILLET_BOTH_B = "fillet_both";
 CMP_PEDESTAL_BASE_B = "push_base";
 
 // LABEL PARAMETERS
@@ -736,7 +736,7 @@ module MakeBox( box )
         function __component_is_round() = __component_shape() == ROUND;
         function __component_is_square() = __component_shape() == SQUARE;
         function __component_is_fillet() = __component_shape() == FILLET;
-        function __component_is_both_fillet() = __value( component, CMP_FILLET_BOTH, default = false );
+        function __component_is_both_fillet() = __value( component, CMP_FILLET_BOTH_B, default = false );
         function __component_fillet_radius() = __value( component, CMP_FILLET_RADIUS, default = min( __compartment_size( k_z ), 10) );
 
         function __component_shear( D ) = __value( component, CMP_SHEAR, default = [0.0, 0.0] )[ D ];
