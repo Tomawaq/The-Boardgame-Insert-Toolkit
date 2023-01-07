@@ -271,6 +271,24 @@ data =
             ],                  
         ]
     ],        
+    [   "fillet both",
+        [
+            [ BOX_SIZE_XYZ,                                     [55, 55, 20.0] ],
+            [ BOX_LID,
+                [            
+                    [ LID_SOLID_B, t],
+                ],
+            ],
+            [ BOX_COMPONENT,
+                [
+                    [CMP_COMPARTMENT_SIZE_XYZ,              [ 53, 53, 15.0] ],
+                    [ CMP_SHAPE,                            FILLET ],
+                    [ CMP_FILLET_BOTH,                      t ],
+                    [ CMP_FILLET_RADIUS,                    5 ],
+                ]
+            ],
+        ]
+    ],        
     [   "example 1",
         [
             [ ENABLED_B,                t],

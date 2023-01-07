@@ -111,6 +111,7 @@ CMP_CUTOUT_BOTTOM_B = "cutout_bottom";
 CMP_CUTOUT_TYPE = "cutout_type";
 CMP_SHEAR = "shear";
 CMP_FILLET_RADIUS = "fillet_radius";
+CMP_FILLET_BOTH = "fillet_both";
 CMP_PEDESTAL_BASE_B = "push_base";
 
 // LABEL PARAMETERS
@@ -735,6 +736,7 @@ module MakeBox( box )
         function __component_is_round() = __component_shape() == ROUND;
         function __component_is_square() = __component_shape() == SQUARE;
         function __component_is_fillet() = __component_shape() == FILLET;
+        function __component_is_both_fillet() = __value( component, CMP_FILLET_BOTH, default = false );
         function __component_fillet_radius() = __value( component, CMP_FILLET_RADIUS, default = min( __compartment_size( k_z ), 10) );
 
         function __component_shear( D ) = __value( component, CMP_SHEAR, default = [0.0, 0.0] )[ D ];
@@ -2194,39 +2196,48 @@ module MakeBox( box )
        module AddFillets()
         {
             r = __component_fillet_radius();
-
-            module _MakeFillet()
+            module _MakeOneFillet(rotate_90) 
             {
-                difference()
+                module _MakeFillet()
                 {
-                    cube_rotated = __component_shape_rotated_90() ? [ __compartment_size( k_x ), r, r ] : [ r, __compartment_size( k_y ), r ];                   
-                    cube ( cube_rotated );
-
- 
-                    cylinder_translated = __component_shape_rotated_90() ? [ 0, r, r ] : [ r, __compartment_size( k_y ), r ];                    
-                    translate( cylinder_translated )
+                    difference()
                     {
-                        cylinder_rotation = __component_shape_rotated_90() ? [ 0, 1, 0, ] : [ 1, 0, 0 ];
+                        cube_rotated = rotate_90 ? [ __compartment_size( k_x ), r, r ] : [ r, __compartment_size( k_y ), r ];                   
+                        cube ( cube_rotated );
 
-                        rotate( v=cylinder_rotation, a=90 )
+    
+                        cylinder_translated = rotate_90 ? [ 0, r, r ] : [ r, __compartment_size( k_y ), r ];                    
+                        translate( cylinder_translated )
                         {
-                            h = __component_shape_rotated_90() ? __compartment_size( k_x ) : __compartment_size( k_y );
-                            cylinder(h = h, r1 = r, r2 = r);  
-                        } 
+                            cylinder_rotation = rotate_90 ? [ 0, 1, 0, ] : [ 1, 0, 0 ];
+
+                            rotate( v=cylinder_rotation, a=90 )
+                            {
+                                h = rotate_90 ? __compartment_size( k_x ) : __compartment_size( k_y );
+                                cylinder(h = h, r1 = r, r2 = r);  
+                            } 
+                        }
                     }
+
                 }
 
+                _MakeFillet();
+
+                mirrorv = rotate_90 ? [ 0,1,0] : [1,0,0];
+                mirrorpt = rotate_90 ? [ 0, __compartment_size( k_y ) / 2, 0 ] : [ __compartment_size( k_x ) / 2, 0, 0 ];
+                
+                MirrorAboutPoint(mirrorv, mirrorpt)
+                {
+                    _MakeFillet();   
+                }
             }
 
-             _MakeFillet();
+            _MakeOneFillet(!__component_shape_rotated_90());    
 
-             mirrorv = __component_shape_rotated_90() ? [ 0,1,0] : [1,0,0];
-             mirrorpt = __component_shape_rotated_90() ? [ 0, __compartment_size( k_y ) / 2, 0 ] : [ __compartment_size( k_x ) / 2, 0, 0 ];
-            
-            MirrorAboutPoint(mirrorv, mirrorpt)
+            if ( __component_is_both_fillet() )
             {
-                _MakeFillet();   
-            }        
+                _MakeOneFillet(__component_shape_rotated_90());    
+            }
         }
 
         module MakeVerticalShape( h, x, r )
