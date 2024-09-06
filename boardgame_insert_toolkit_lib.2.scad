@@ -481,7 +481,7 @@ module MakeDividers( div )
 
         difference()
         {
-            MakeRoundedCubeAxis( [ width, height, depth ], 4, k_z);
+            MakeRoundedCubeAxis( [ width, height, depth ], 4, [t, t, t, t], k_z);
 
             if ( num_columns != -1 )
             for (c = [ 0 : num_columns ] ) 
@@ -501,7 +501,7 @@ module MakeDividers( div )
             // tab shape
             translate( title_pos )
             {
-                MakeRoundedCubeAxis( [ tab_width, tab_height + height_overlap, depth], 4, k_z ); 
+                MakeRoundedCubeAxis( [ tab_width, tab_height + height_overlap, depth], 4, [f, f, t, t], k_z);
             }
 
             // words
